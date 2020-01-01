@@ -6,34 +6,37 @@ import com.bankapplication.services.BankAccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("clients")
 public class BankAccountController {
 
     private final BankAccountService bankAccountService;
 
     // Account mappings
 
-    @PostMapping("user/{id}/createAccount") //TODO: Доделать реализацию. Везде BankAccount заменить на List<BankAccount>, что бы у юзера могло быть несколько счетов.
-    public BankAccountResponseDto createAccount(@RequestBody BankAccountRequestDto bankAccountRequestDto, @PathVariable Long id) {
-        return bankAccountService.createAccount(bankAccountRequestDto, id);
+    @PostMapping("{clientId}/accounts")
+    public BankAccountResponseDto createAccount(@RequestBody @Valid BankAccountRequestDto bankAccountRequestDto, @PathVariable Long clientId) {
+        return bankAccountService.createAccount(bankAccountRequestDto, clientId);
     }
 
-    @DeleteMapping("deleteAccount/{id}")
-    public void deleteAccount(@PathVariable Long id) {
-        bankAccountService.deleteById(id);
+    @DeleteMapping("accounts/{accountId}")
+    public void deleteAccount(@PathVariable Long accountId) {
+        bankAccountService.deleteById(accountId);
     }
 
 
     //Money mappings
 
-    @PutMapping("putMoney/{accountNumber}")
+    @PatchMapping("accounts/{accountNumber}")
     public BankAccountResponseDto putMoney(@PathVariable String accountNumber, @RequestBody BigDecimal addingMoneyAmount) {
         return bankAccountService.putMoney(accountNumber, addingMoneyAmount);
     }
 
+    // FIXME: it doesn't work as expected, need to know account number send from and account number send to
     @PutMapping("sendMoneyTo/{accountNumber}")
     public BankAccountResponseDto sendMoney(@PathVariable String accountNumber, @RequestBody BigDecimal sendingMoneyAmount) {
         return bankAccountService.sendMoney(accountNumber, sendingMoneyAmount);

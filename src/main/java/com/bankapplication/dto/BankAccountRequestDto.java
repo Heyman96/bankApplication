@@ -1,17 +1,18 @@
 package com.bankapplication.dto;
 
+import com.bankapplication.data.domain.Currency;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Data
 public class BankAccountRequestDto {
 
-    @NotBlank
+    @NotNull
     private BigDecimal moneyAmount;
 
-    @NotBlank
-    private String currency;
+    @NotNull
+    private Currency currency;
 
 }

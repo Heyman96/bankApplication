@@ -2,7 +2,7 @@ package com.bankapplication.dto;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 @Data
@@ -17,16 +17,16 @@ public class ClientRequestDto {
     @NotBlank
     private String patronymic;
 
-    @NotBlank
+    @Past
     private LocalDate birthDate;
 
+    @Pattern(regexp = "\\(?([0-9]{3})\\)?([ ]?)([0-9]{3})\\2([0-9]{4})") // (123) 456 7899
     @NotBlank
     private String phoneNumber;
 
-    @NotBlank
+    @Email
     private String email;
 
-    @NotBlank
     private BankAccountRequestDto bankAccount;
 
 }

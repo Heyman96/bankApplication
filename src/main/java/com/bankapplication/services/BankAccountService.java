@@ -8,8 +8,6 @@ import java.math.BigDecimal;
 
 public interface BankAccountService {
 
-    BankAccount createDefaultAccount(BankAccountRequestDto bankAccountRequestDto);
-
     BankAccountResponseDto createAccount(BankAccountRequestDto bankAccountRequestDto, Long id);
 
     BankAccountResponseDto putMoney(String accountNumber, BigDecimal addingMoneyAmount);

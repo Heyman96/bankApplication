@@ -6,18 +6,23 @@ import com.bankapplication.services.ClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("clients")
 public class ClientController {
 
     private final ClientService clientService;
 
-    @PostMapping("createClient")
-    public ClientResponseDto createClient(@RequestBody ClientRequestDto clientRequestDto) {
+    // TODO: findById
+
+    @PostMapping
+    public ClientResponseDto createClient(@RequestBody @Valid ClientRequestDto clientRequestDto) {
         return clientService.createClient(clientRequestDto);
     }
 
-    @DeleteMapping("deleteClient/{id}")
+    @DeleteMapping("{id}")
     public void deleteClient(@PathVariable Long id) {
         clientService.deleteById(id);
     }
