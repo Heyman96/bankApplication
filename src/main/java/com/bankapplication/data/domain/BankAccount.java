@@ -20,6 +20,11 @@ public class BankAccount {
     private BigDecimal moneyAmount = new BigDecimal("10000");
 
     @Column(nullable = false)
-    private String currency; // - Валюта
+    @Enumerated(EnumType.STRING)
+    private Currency currency = Currency.UAH; // - Валюта
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "client_id")
+    private Client client;
 
 }

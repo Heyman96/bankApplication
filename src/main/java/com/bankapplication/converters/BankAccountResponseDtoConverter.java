@@ -13,6 +13,7 @@ public class BankAccountResponseDtoConverter implements Converter<BankAccount, B
 
         BankAccountResponseDto bankAccountResponseDto = new BankAccountResponseDto();
 
+        bankAccountResponseDto.setId(bankAccount.getId());
         bankAccountResponseDto.setAccountNumber(bankAccount.getAccountNumber());
         bankAccountResponseDto.setMoneyAmount(bankAccount.getMoneyAmount());
         bankAccountResponseDto.setCurrency(bankAccount.getCurrency());

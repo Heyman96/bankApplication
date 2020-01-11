@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
-
 @Service
 public class BankAccountServiceImpl implements BankAccountService {
 
@@ -29,43 +28,20 @@ public class BankAccountServiceImpl implements BankAccountService {
     private GenerationService generationService;
 
     @Override
-    public BankAccount createDefaultAccount(BankAccountRequestDto bankAccountRequestDto) {
-
-        BankAccount bankAccount =
-                conversionService.convert(bankAccountRequestDto, BankAccount.class);
-
-        String accountNumber = generationService.getAccountNumber();
-
-        bankAccount.setAccountNumber(accountNumber);
-
-        BankAccount savedBankAccount = bankAccountRepository.save(bankAccount);
-
-        return savedBankAccount;
-
-    }
-
-    @Override
     public BankAccountResponseDto createAccount(BankAccountRequestDto bankAccountRequestDto, Long id) {
 
-        BankAccount bankAccount =
-                conversionService.convert(bankAccountRequestDto, BankAccount.class);
-
+        Client client = clientRepository.findById(id).
+                orElseThrow(() -> new BankAccountNotFoundException("Client not found!")); // at first we have to ensure that client with given id exists
+                                                                                          // especially it's has no sense to check client existence after saving account
         String accountNumber = generationService.getAccountNumber();
 
+        BankAccount bankAccount = conversionService.convert(bankAccountRequestDto, BankAccount.class);
         bankAccount.setAccountNumber(accountNumber);
+        bankAccount.setClient(client);
 
         BankAccount savedBankAccount = bankAccountRepository.save(bankAccount);
 
-        Client client = clientRepository.findById(id).
-                orElseThrow(() -> new BankAccountNotFoundException("Client not found!"));
-
-        client.setBankAccount(savedBankAccount);
-
-        BankAccountResponseDto bankAccountResponseDto =
-                conversionService.convert(savedBankAccount, BankAccountResponseDto.class);
-
-        return bankAccountResponseDto;
-
+        return conversionService.convert(savedBankAccount, BankAccountResponseDto.class);
     }
 
     @Override
@@ -87,6 +63,7 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
+    // TODO: ???
     public BankAccountResponseDto getMoney(String accountNumber, BigDecimal gettingMoneyAmount) {
 
         BankAccount bankAccount = bankAccountRepository.findByAccountNumber(accountNumber)
@@ -106,6 +83,7 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
+    // FIXME: it's not working as expected, need to know account number send from and account number send to
     public BankAccountResponseDto sendMoney(String accountNumber, BigDecimal sendingMoneyAmount) {
 
         BankAccount sendingBankAccount = bankAccountRepository.findByAccountNumber(accountNumber)
@@ -129,6 +107,7 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
+    // TODO: ???
     public BankAccount findByAccountNumber(String accountNumber) {
 
         BankAccount bankAccount = bankAccountRepository.findByAccountNumber(accountNumber)
