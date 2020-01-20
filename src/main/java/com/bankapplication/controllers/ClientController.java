@@ -1,25 +1,46 @@
 package com.bankapplication.controllers;
 
+import com.bankapplication.data.domain.Client;
 import com.bankapplication.dto.ClientRequestDto;
 import com.bankapplication.dto.ClientResponseDto;
 import com.bankapplication.services.ClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.List;
+import java.util.UUID;
+
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("clients")
 public class ClientController {
 
     private final ClientService clientService;
 
-    @PostMapping("createClient")
-    public ClientResponseDto createClient(@RequestBody ClientRequestDto clientRequestDto) {
+    @PostMapping("client")
+    public ClientResponseDto createClient(@RequestBody @Valid ClientRequestDto clientRequestDto) {
         return clientService.createClient(clientRequestDto);
     }
 
-    @DeleteMapping("deleteClient/{id}")
-    public void deleteClient(@PathVariable Long id) {
+    @GetMapping("clients")
+    public List<Client> findClients() {
+        return clientService.findClients();
+    }
+
+    @GetMapping("client/{id}")
+    public Client findClientById(@PathVariable UUID id) {
+        return clientService.findClientById(id);
+    }
+
+    @DeleteMapping("{id}")
+    public void deleteClient(@PathVariable UUID id) {
         clientService.deleteById(id);
+    }
+
+    @DeleteMapping("deleteAllClients")
+    public void deleteAllClients() {
+        clientService.deleteAllClients();
     }
 
 }

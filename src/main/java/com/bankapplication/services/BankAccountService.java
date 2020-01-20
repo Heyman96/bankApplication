@@ -4,22 +4,18 @@ import com.bankapplication.data.domain.BankAccount;
 import com.bankapplication.dto.BankAccountRequestDto;
 import com.bankapplication.dto.BankAccountResponseDto;
 
-import java.math.BigDecimal;
+import java.util.UUID;
 
 public interface BankAccountService {
 
-    BankAccount createDefaultAccount(BankAccountRequestDto bankAccountRequestDto);
+    BankAccountResponseDto createAccount(BankAccountRequestDto bankAccountRequestDto, UUID id);
 
-    BankAccountResponseDto createAccount(BankAccountRequestDto bankAccountRequestDto, Long id);
+    BankAccountResponseDto putMoney(String accountNumber, BankAccountRequestDto bankAccountRequestDto);
 
-    BankAccountResponseDto putMoney(String accountNumber, BigDecimal addingMoneyAmount);
-
-    BankAccountResponseDto getMoney(String accountNumber, BigDecimal gettingMoneyAmount);
-
-    BankAccountResponseDto sendMoney(String accountNumber, BigDecimal sendingMoneyAmount);
+    BankAccountResponseDto sendMoney(String sendingAccountNumber, String gettingAccountNumber, BankAccountRequestDto bankAccountRequestDto);
 
     BankAccount findByAccountNumber(String accountNumber);
 
-    void deleteById(Long id);
+    void deleteById(UUID id);
 
 }

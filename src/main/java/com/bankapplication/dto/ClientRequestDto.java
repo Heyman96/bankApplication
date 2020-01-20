@@ -2,7 +2,8 @@ package com.bankapplication.dto;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 @Data
@@ -17,16 +18,17 @@ public class ClientRequestDto {
     @NotBlank
     private String patronymic;
 
-    @NotBlank
+    @Past //Переменная под такой аннотацией, может быть инициализирована исключительно датой из прошлого или относительно недавнего времени. БУДУЩИЕ ДАТЫ НЕ ДОПУСКАЮТСЯ.
     private LocalDate birthDate;
 
+    @Pattern(regexp = "\\(?([0-9]{3})\\)?([ ]?)([0-9]{3})?([ ]?)([0-9]{4})") // (123) 456 7899
     @NotBlank
     private String phoneNumber;
-
-    @NotBlank
+    
+    @Email
     private String email;
 
-    @NotBlank
+    @Valid
     private BankAccountRequestDto bankAccount;
 
 }

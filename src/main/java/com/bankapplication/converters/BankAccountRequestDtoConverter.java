@@ -1,12 +1,13 @@
 package com.bankapplication.converters;
 
 import com.bankapplication.data.domain.BankAccount;
+import com.bankapplication.data.domain.enums.Currency;
 import com.bankapplication.dto.BankAccountRequestDto;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BankAccountRequestDtoConverter implements Converter<BankAccountRequestDto, BankAccount>{ //Converter<BankAccountRequestDto, BankAccount>
+public class BankAccountRequestDtoConverter implements Converter<BankAccountRequestDto, BankAccount>{
 
     @Override
     public BankAccount convert(BankAccountRequestDto bankAccountRequestDto) {

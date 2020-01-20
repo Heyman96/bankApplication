@@ -1,42 +1,49 @@
 package com.bankapplication.controllers;
 
+import com.bankapplication.data.domain.BankAccount;
 import com.bankapplication.dto.BankAccountRequestDto;
 import com.bankapplication.dto.BankAccountResponseDto;
 import com.bankapplication.services.BankAccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
+import javax.validation.Valid;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("accounts")
 public class BankAccountController {
 
     private final BankAccountService bankAccountService;
 
     // Account mappings
 
-    @PostMapping("user/{id}/createAccount") //TODO: Доделать реализацию. Везде BankAccount заменить на List<BankAccount>, что бы у юзера могло быть несколько счетов.
-    public BankAccountResponseDto createAccount(@RequestBody BankAccountRequestDto bankAccountRequestDto, @PathVariable Long id) {
+    @PostMapping("client/{id}") //FIXME: doesn't want to read "?" in endpoints  (1)
+    public BankAccountResponseDto createAccount(@RequestBody @Valid BankAccountRequestDto bankAccountRequestDto, @PathVariable UUID id) {
         return bankAccountService.createAccount(bankAccountRequestDto, id);
     }
 
-    @DeleteMapping("deleteAccount/{id}")
-    public void deleteAccount(@PathVariable Long id) {
+    @GetMapping("?accountNumber={accountNumber}")
+    public BankAccount findByAccountNumber(@PathVariable String accountNumber) {
+        return bankAccountService.findByAccountNumber(accountNumber);
+    }
+
+    @DeleteMapping("account/{id}")
+    public void deleteAccount(@PathVariable UUID id) {
         bankAccountService.deleteById(id);
     }
 
-
     //Money mappings
 
-    @PutMapping("putMoney/{accountNumber}")
-    public BankAccountResponseDto putMoney(@PathVariable String accountNumber, @RequestBody BigDecimal addingMoneyAmount) {
-        return bankAccountService.putMoney(accountNumber, addingMoneyAmount);
+    @PatchMapping("placing/accountNumber={accountNumber}") //FIXME: doesn't want to read "?" in endpoints  (2)
+    public BankAccountResponseDto putMoney(@PathVariable String accountNumber, @RequestBody @Valid BankAccountRequestDto bankAccountRequestDto) {
+        return bankAccountService.putMoney(accountNumber, bankAccountRequestDto);
     }
 
-    @PutMapping("sendMoneyTo/{accountNumber}")
-    public BankAccountResponseDto sendMoney(@PathVariable String accountNumber, @RequestBody BigDecimal sendingMoneyAmount) {
-        return bankAccountService.sendMoney(accountNumber, sendingMoneyAmount);
+    @PutMapping("sending/{sendingAccountNumber}/{gettingAccountNumber}")
+    public BankAccountResponseDto sendMoney(@PathVariable String sendingAccountNumber, @PathVariable String gettingAccountNumber, @RequestBody @Valid BankAccountRequestDto bankAccountRequestDto) {
+        return bankAccountService.sendMoney(sendingAccountNumber, gettingAccountNumber, bankAccountRequestDto);
     }
 
 }
