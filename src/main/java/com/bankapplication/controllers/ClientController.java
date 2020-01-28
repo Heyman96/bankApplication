@@ -18,7 +18,7 @@ public class ClientController {
 
     private final ClientService clientService;
 
-    @PostMapping("client")
+    @PostMapping
     public ClientResponseDto createClient(@RequestBody @Valid ClientRequestDto clientRequestDto) {
         return clientService.createClient(clientRequestDto);
     }
@@ -28,7 +28,7 @@ public class ClientController {
         return clientService.findClients();
     }
 
-    @GetMapping("client/{id}")
+    @GetMapping("{id}")
     public Client findClientById(@PathVariable UUID id) {
         return clientService.findClientById(id);
     }
@@ -38,7 +38,7 @@ public class ClientController {
         clientService.deleteById(id);
     }
 
-    @DeleteMapping("deleteAllClients")
+    @DeleteMapping("clients")
     public void deleteAllClients() {
         clientService.deleteAllClients();
     }

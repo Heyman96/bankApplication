@@ -12,36 +12,36 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("accounts")
+@RequestMapping("clients/accounts")
 public class BankAccountController {
 
     private final BankAccountService bankAccountService;
 
     // Account mappings
 
-    @PostMapping("client/{id}") //FIXME: doesn't want to read "?" in endpoints  (1)
+    @PostMapping
     public BankAccountResponseDto createAccount(@RequestBody @Valid BankAccountRequestDto bankAccountRequestDto, @PathVariable UUID id) {
         return bankAccountService.createAccount(bankAccountRequestDto, id);
     }
 
-    @GetMapping("?accountNumber={accountNumber}")
-    public BankAccount findByAccountNumber(@PathVariable String accountNumber) {
+    @GetMapping
+    public BankAccount findByAccountNumber(@RequestParam String accountNumber) {
         return bankAccountService.findByAccountNumber(accountNumber);
     }
 
-    @DeleteMapping("account/{id}")
+    @DeleteMapping("{id}")
     public void deleteAccount(@PathVariable UUID id) {
         bankAccountService.deleteById(id);
     }
 
     //Money mappings
 
-    @PatchMapping("placing/accountNumber={accountNumber}") //FIXME: doesn't want to read "?" in endpoints  (2)
+    @PatchMapping("{accountNumber}")
     public BankAccountResponseDto putMoney(@PathVariable String accountNumber, @RequestBody @Valid BankAccountRequestDto bankAccountRequestDto) {
         return bankAccountService.putMoney(accountNumber, bankAccountRequestDto);
     }
 
-    @PutMapping("sending/{sendingAccountNumber}/{gettingAccountNumber}")
+    @PutMapping("{sendingAccountNumber}/{gettingAccountNumber}")
     public BankAccountResponseDto sendMoney(@PathVariable String sendingAccountNumber, @PathVariable String gettingAccountNumber, @RequestBody @Valid BankAccountRequestDto bankAccountRequestDto) {
         return bankAccountService.sendMoney(sendingAccountNumber, gettingAccountNumber, bankAccountRequestDto);
     }

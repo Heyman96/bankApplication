@@ -38,7 +38,7 @@ public class Client {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String password;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)

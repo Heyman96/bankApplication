@@ -44,7 +44,7 @@ public class BankAccountServiceImpl implements BankAccountService {
 
         BankAccount savedBankAccount = bankAccountRepository.save(bankAccount);
 
-        client.addBankAccount(savedBankAccount); //FIXME :: FIXED :: when we create 2nd+ account, program will add it to List "BankAccounts"
+        client.addBankAccount(savedBankAccount);
 
         return conversionService.convert(savedBankAccount, BankAccountResponseDto.class);
 
